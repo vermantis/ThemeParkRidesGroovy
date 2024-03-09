@@ -4,14 +4,46 @@ plugins {
     id 'base'
 }
 
+//  Better performance task definition
 tasks.register('generateDescriptions', Copy) {
+    group 'Theme park'
+    description 'Copies the theme park ride descriptions'
     from 'descriptions'
     into "$buildDir/descriptions"
     filter(ReplaceTokens, tokens: [THEME_PARK_NAME: "Grelephant's Wonder World"])
 }
 
+//  Legacy syntax task definition
+//task generateDescriptions(type: Copy) {
+//    from 'descriptions'
+//    into "$buildDir/descriptions"
+//    filter(ReplaceTokens, tokens: [THEME_PARK_NAME: "Grelephant's Wonder World"])
+//}
+
+//
 tasks.register('zipDescriptions', Zip) {
     from "$buildDir/descriptions"
     destinationDirectory = buildDir
     archiveFileName = 'descriptions.zip'
+}
+
+//  Create adhoc task with do last
+tasks.register('sayHello') {
+    doLast {
+        print('Hello!')
+    }
+}
+
+//  Create new adhoc task with do last
+tasks.register("sayBye") {
+    doLast {
+        println("Bye!")
+    }
+    //  Disable task
+    //enabled false
+
+    //  Evaluate by onlyIf if the task must be executed
+    onlyIf {
+        2 == 3 * 2
+    }
 }
